@@ -19,8 +19,6 @@ Cada nota es un archivo `.md` en una carpeta normal: ponla en **Dropbox** y tus 
 - Barra flotante de formato al seleccionar texto, menú **Aa**, menú del botón derecho y menú Formato.
 - 11 temas, 4 tipografías; el texto ocupa todo el ancho de la ventana (o un ancho fijo, en Preferencias). Modo concentración.
 
-Para ver la comparación completa con Bear, revisa [BEAR-MAPA.md](BEAR-MAPA.md).
-
 ## Atajos
 | Acción | Atajo |
 | --- | --- |
