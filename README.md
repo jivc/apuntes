@@ -1,6 +1,6 @@
 # Apuntes
 
-Notas en Markdown con una interfaz cuidada, inspirada en Bear, que funciona en **macOS, Windows y Linux**.
+Notas en Markdown con una interfaz cuidada, que funciona en **macOS, Windows y Linux**.
 Cada nota es un archivo `.md` en una carpeta normal: ponla en **Dropbox** y tus notas se sincronizan entre todas tus computadoras. Es compatible con bóvedas de **Obsidian**.
 
 ## Funciones
