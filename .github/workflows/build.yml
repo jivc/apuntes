@@ -1,0 +1,70 @@
+# Compila Apuntes para macOS, Windows y Linux.
+#  · Al subir una etiqueta v* (por ejemplo v0.3.0) publica los instaladores en «Releases».
+#  · También se puede lanzar a mano desde la pestaña Actions (solo deja los instaladores como «Artifacts»).
+name: Compilar Apuntes
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: macOS, os: macos-latest, target: --mac }
+          - { name: Windows, os: windows-latest, target: --win }
+          - { name: Linux, os: ubuntu-latest, target: --linux }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Herramientas para crear el .rpm (Fedora)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y rpm
+      - run: npm ci
+      - run: npm run build
+      - name: Crear instaladores
+        run: npx electron-builder ${{ matrix.target }} --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apuntes-${{ matrix.name }}
+          if-no-files-found: error
+          path: |
+            release/*.dmg
+            release/*.exe
+            release/*.AppImage
+            release/*.deb
+            release/*.rpm
+
+  release:
+    name: Publicar en Releases
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: instaladores
+          merge-multiple: true
+      - name: Crear la versión con los instaladores
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Si la versión ya existe (creada desde la página de GitHub), solo se le añaden los instaladores.
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" instaladores/* --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" instaladores/* --repo "$GITHUB_REPOSITORY" --title "Apuntes $GITHUB_REF_NAME" --generate-notes
+          fi
