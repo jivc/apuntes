@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' file: data: https:">
+  <title>Apuntes</title>
+  <link rel="stylesheet" href="dist/styles.css">
+</head>
+<body>
+  <div id="app" hidden>
+    <aside id="sidebar">
+      <div class="sidebar-top drag"></div>
+      <nav id="nav"></nav>
+      <div id="tags"></div>
+      <footer class="sidebar-footer">
+        <span id="vault-name" class="vault-name"></span>
+        <button id="open-settings" class="icon-btn" title="Preferencias (Ctrl/⌘ ,)" data-icon="settings"></button>
+      </footer>
+      <div class="resizer" data-col="sidebar" title="Arrastra para cambiar el ancho"></div>
+    </aside>
+
+    <section id="list">
+      <header class="list-header drag">
+        <button id="toggle-sidebar" class="icon-btn" title="Modo concentración (Ctrl/⌘ \)" data-icon="sidebar"></button>
+        <div id="list-title" class="list-title"></div>
+        <button id="new-note" class="icon-btn round" title="Nueva nota (Ctrl/⌘ N)" data-icon="compose"></button>
+      </header>
+      <div class="search-row">
+        <label class="search" data-icon="search"><input id="search" type="search" placeholder="Buscar en las notas" title="Operadores: &quot;frase&quot;  -palabra  #etiqueta  @todo  @hoy  @fijadas  @imagenes  @codigo  @titulo" spellcheck="false"></label>
+      </div>
+      <div id="notes" class="notes"></div>
+      <div class="resizer" data-col="list" title="Arrastra para cambiar el ancho"></div>
+    </section>
+
+    <main id="editor-pane">
+      <header class="editor-header drag">
+        <button id="show-lists" class="icon-btn" title="Mostrar la lista de notas (Ctrl/⌘ \)" data-icon="sidebar"></button>
+        <span id="editor-info" class="editor-info"></span>
+        <span class="spacer"></span>
+        <div class="toolbar-pill">
+          <button id="format-btn" class="icon-btn format-btn" title="Formato" data-icon="format"></button>
+          <div id="editor-actions" class="editor-actions"></div>
+        </div>
+      </header>
+      <div id="editor-scroll" class="editor-scroll"><div id="editor"></div></div>
+      <div id="format-bar" class="format-bar" role="toolbar" aria-label="Formato"></div>
+      <div id="format-menu" class="format-menu" hidden></div>
+      <aside id="side-panel" class="side-panel" hidden></aside>
+      <div id="multi" class="multi" hidden></div>
+      <div id="empty" class="empty">
+        <img class="empty-logo" src="assets/icon.png" alt="">
+        <div class="empty-mark">Apuntes</div>
+        <p class="empty-hint">Elige una nota de la lista o crea una nueva.</p>
+        <button id="empty-new" class="primary-btn small" data-icon="compose">Nueva nota</button>
+      </div>
+    </main>
+  </div>
+
+  <section id="welcome" class="welcome" hidden>
+    <div class="welcome-card">
+      <img class="welcome-logo" src="assets/icon.png" alt="">
+      <h1>Bienvenido a Apuntes</h1>
+      <p>Tus notas son archivos Markdown en una carpeta. Ponla en Dropbox y estarán sincronizadas en Mac, Windows y Linux.</p>
+      <button id="welcome-dropbox" class="primary-btn" hidden data-icon="dropbox">
+        <span>Usar Dropbox<small id="welcome-dropbox-path"></small></span>
+      </button>
+      <button id="welcome-choose" class="secondary-btn" data-icon="folder">Elegir otra carpeta…</button>
+      <p class="hint">¿Ya usas Obsidian? Elige la carpeta de tu bóveda: Apuntes lee las mismas notas.</p>
+    </div>
+  </section>
+
+  <dialog id="settings" class="settings">
+    <h2>Preferencias</h2>
+    <label>Tema <select id="set-theme"></select></label>
+    <label>Tipografía <select id="set-font"></select></label>
+    <label>Tamaño de letra <input id="set-size" type="range" min="12" max="32" step="1"></label>
+    <label>Interlineado <input id="set-lh" type="range" min="1.3" max="2.3" step="0.05"></label>
+    <label>Texto a todo el ancho de la ventana <input id="set-full" type="checkbox"></label>
+    <label id="set-width-row">Ancho de línea <input id="set-width" type="range" min="520" max="1400" step="20"></label>
+    <div class="vault-box">
+      <div class="vault-label">Carpeta de notas</div>
+      <code id="set-vault"></code>
+      <div class="row">
+        <button id="set-change-vault" class="secondary-btn">Cambiar…</button>
+        <button id="set-open-vault" class="secondary-btn">Abrir carpeta</button>
+      </div>
+    </div>
+    <div class="row end"><button id="settings-close" class="primary-btn small">Listo</button></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="dist/app.js"></script>
+</body>
+</html>
